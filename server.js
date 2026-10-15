@@ -35,20 +35,19 @@ const server = net.createServer((client) => {
     if (stage !== "connected") client.destroy();
   }, 10000);
 
-  function reject(reason) {
-    if (finished) return;
-    finished = true;
-    clearTimeout(headerTimer);
-    console.log("RELAY REJECT:", reason, {
-  receivedLength:
-    typeof receivedSecret !== "undefined"
-      ? receivedSecret.length
-      : null,
-  expectedLength: expectedSecret.length
-});
-    client.destroy();
-    remote?.destroy();
-  }
+  
+function reject(reason) {
+  if (finished) return;
+
+  finished = true;
+  clearTimeout(headerTimer);
+
+  console.log("RELAY REJECT:", reason);
+
+  client.destroy();
+  remote?.destroy();
+}
+
 
   function onData(chunk) {
     if (finished) return;
